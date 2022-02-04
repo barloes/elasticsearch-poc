@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   elasticsearch:
@@ -30,4 +30,8 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
-      - database
+      - tika
+  tika:
+    image: apache/tika
+    ports:
+      - "9998:9998"

@@ -6,7 +6,7 @@ import { Button, Form, Row, Col, Card, ListGroup } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 
 async function getSearchApi(params) {
-  return fetch(`/search?q=${params}`, {
+  return fetch(`/api/search?q=${params}`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -19,24 +19,8 @@ function App() {
   const [result, setResult] = useState([]);
 
   const handleSearch = async (e) => {
-    //to remove
-    setResult([
-      {
-        name: "file1",
-        link: "www.google.com",
-      },
-      {
-        name: "file2",
-        link: "www.google.com",
-      },
-    ]);
-
     getSearchApi(search).then((data) => {
-      console.log(data);
-
-      setResult(data);
-
-      //set data here
+      setResult(data.result);
     });
   };
 
@@ -53,14 +37,14 @@ function App() {
                 <br></br>
                 {result.map((item, index) => (
                   <Row className="justify-content-md-center" key={index}>
-                    <Col xs={8}>
+                    <Col xs={9}>
                       <ListGroup as="ol">
                         <ListGroup.Item
                           as="li"
                           className="d-flex justify-content-between align-items-start"
                         >
                           {index + 1}.{item.name}{" "}
-                          <Card.Link href={"http://" + item.link}>
+                          <Card.Link href={item.link}>
                             {item.link.length < 23
                               ? `${item.link}`
                               : `${item.link.substring(0, 20)}...`}{" "}

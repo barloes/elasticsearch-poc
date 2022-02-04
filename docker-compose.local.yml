@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   elasticsearch:
@@ -15,6 +15,12 @@ services:
     restart: always
     environment:
       FLASK_ENV: development
+      S3_NAME: junhuisearch
+      TIKA_CLIENT_ONLY: 1
+      TIKA_SERVER_ENDPOINT: http://tika:9998
+      ES_ENDPOINT: http://elasticsearch:9200
+      ES_INDEX: doc
+      S3_LINK: https://junhuisearch.s3.ap-southeast-1.amazonaws.com/
     ports:
       - "5000:5000"
     volumes:
@@ -22,3 +28,8 @@ services:
       - ~/.aws:/root/.aws
     depends_on:
       - elasticsearch
+      - tika
+  tika:
+    image: apache/tika
+    ports:
+      - "9998:9998"
