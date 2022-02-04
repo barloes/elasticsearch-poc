@@ -4,3 +4,4 @@ flask_cors==3.0.10
 awscli==1.22.8
 tika==1.24
 elasticsearch==7.17.0
+Flask-APScheduler==1.12.3

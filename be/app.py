@@ -5,10 +5,15 @@ from flask_cors import CORS
 import os
 from tika import parser
 from elasticsearch import Elasticsearch
+from flask_apscheduler import APScheduler
 import re
 
+scheduler = APScheduler()
 app = Flask(__name__)
+scheduler.init_app(app)
+scheduler.start()
 CORS(app)
+
 app.secret_key = "super secret key"
 
 # GET ENV
@@ -62,9 +67,7 @@ def healthcheck_es():
 
 # test get all info
 @app.route("/search", methods=["GET"])
-def get_all_es():
-    upsert_index_es()
-
+def get_search_es():
     q = request.args.get("q")
 
     query_body = q if q != "" else "*"
@@ -89,30 +92,34 @@ def convert_es_res_to_obj_list(res):
     return obj_list
 
 
-# add es.
 @app.route("/es/add", methods=["GET"])
-def upsert_index_es():
+def get_update_es():
     # get file name
     try:
-        name_list = list_objects_s3()
-
-        # get content
-        for name in name_list:
-            app.logger.info(f"processing {name}")
-            obj_content = get_object_content_s3(name)
-            doc = {
-                "name": name,
-                "text": obj_content,
-            }
-            res = es_client.update(
-                index=ES_INDEX, id=name, body={"doc": doc, "doc_as_upsert": True}
-            )
-
-            app.logger.info(res)
+        upsert_index_es()
 
         return jsonify({"msg": str("insertion complete")})
     except Exception as e:
         return jsonify({"msg": str(e)})
+
+
+# add es.
+@scheduler.task("cron", id="update_es", minute="*")
+def upsert_index_es():
+    # get file name
+    name_list = list_objects_s3()
+    for name in name_list:
+        app.logger.info(f"processing {name}")
+        obj_content = get_object_content_s3(name)
+        doc = {
+            "name": name,
+            "text": obj_content,
+        }
+        res = es_client.update(
+            index=ES_INDEX, id=name, body={"doc": doc, "doc_as_upsert": True}
+        )
+
+        app.logger.info(res)
 
 
 @app.route("/es/del", methods=["GET"])
