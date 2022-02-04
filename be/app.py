@@ -65,7 +65,7 @@ def healthcheck_es():
     return jsonify({"msg": es_client.info()})
 
 
-# test get all info
+# search based on query and return list of objs consisting of name and link
 @app.route("/search", methods=["GET"])
 def get_search_es():
     q = request.args.get("q")
@@ -92,6 +92,7 @@ def convert_es_res_to_obj_list(res):
     return obj_list
 
 
+# get req to manually update index
 @app.route("/es/add", methods=["GET"])
 def get_update_es():
     # get file name
@@ -103,7 +104,7 @@ def get_update_es():
         return jsonify({"msg": str(e)})
 
 
-# add es.
+# cron job to update index
 @scheduler.task("cron", id="update_es", minute="*")
 def upsert_index_es():
     # get file name
@@ -122,6 +123,7 @@ def upsert_index_es():
         app.logger.info(res)
 
 
+# api to manually delete index
 @app.route("/es/del", methods=["GET"])
 def delete_index_es():
     res = es_client.indices.delete(index=ES_INDEX, ignore=[400, 404])
