@@ -26,6 +26,14 @@ docker-compose -f docker-compose.local.yml up
   - User can view result
   - User can download files
 
+# Query Example
+
+| Query  | Result                    |
+| ------ | ------------------------- |
+|        | all the files             |
+| jun    | JunHui_Resume_2022Jan.pdf |
+| coding | testing.pdf               |
+
 # Features
 
 - Frontend
