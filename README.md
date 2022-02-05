@@ -22,9 +22,8 @@ docker-compose -f docker-compose.local.yml up
 # User Scenario
 
 - User searching for relevant files
-  - User input keywords
-  - User clicks on search
-  - User gets back result
+  - User can search for keywords
+  - User can view result
   - User can download files
 
 # Features
