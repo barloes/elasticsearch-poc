@@ -34,7 +34,7 @@ services:
     ports:
       - "9998:9998"
   frontend:
-    image: 642151248908.dkr.ecr.ap-southeast-1.amazonaws.com/junhuiimage:search
+    build: fe/.
     ports:
       - "80:80"
     volumes:

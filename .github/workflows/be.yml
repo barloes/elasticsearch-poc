@@ -27,5 +27,4 @@ jobs:
       - name: sync s3
         run: |
           INSTANCE_ID=$(aws ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId, Tags[?Key==`Name`], Tags[?Key==`$PROJECT_NAME`]][0][0]' --output text)
-          aws s3 cp ./$PROJECT_NAME.tar.gz s3://$S3_BUCKET
-          aws s3 sync ./$PROJECT_NAME.tar.gz s3://$S3_BUCKET --delete
+          aws s3 cp ./$PROJECT_NAME.tar.gz s3://$S3_BUCKET/$PROJECT_NAME.tar.gz
