@@ -21,8 +21,8 @@ jobs:
 
       - name: zip file
         run: |
-          sudo touch backup.tar.gz
-          sudo tar --exclude='.git/*' --exclude='fe/node_modules' --exclude='backup.tar.gz' --exclude='data' -zcvf backup.tar.gz .
+          sudo touch $PROJECT_NAME.tar.gz
+          sudo tar --exclude='.git/*' --exclude='fe/node_modules' --exclude='$PROJECT_NAME.tar.gz' --exclude='data' -zcvf $PROJECT_NAME.tar.gz .
 
       - name: sync s3
         run: |
