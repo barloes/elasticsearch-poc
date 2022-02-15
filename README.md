@@ -54,8 +54,3 @@ docker-compose -f docker-compose.local.yml up
 - to improve the performance of the search, rather then updating the ES and quering the ES upon /search request. Cronjob (1 min) is used instead to sync up ES and S3.
 - S3 file contents are formatted using re.sub(r"(@\[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)|^rt", " ", text) to remove any undesirable characters
 - ES Upsert api is used with they key of the object being the name to minimize duplicates
-
-
-aws ec2 stop-instances --instance-ids $INSTANCE_ID
-sleep 60
-aws ec2 start-instances --instance-ids $INSTANCE_ID

@@ -2,7 +2,6 @@ on: push
 env:
   PROJECT_NAME: search
   NAME: junhui-infra-bot #create a new s3 bucket
-  WORKDIR: ./fe
 
 jobs:
   deploy:
