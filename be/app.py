@@ -27,7 +27,7 @@ es_client = Elasticsearch(ES_ENDPOINT)
 
 @app.route("/", methods=["GET"])
 def healthcheck():
-    return jsonify({"msg": "HelloWorld"})
+    return jsonify({"msg": "aHelloWorld"})
 
 
 # return list containing file name
