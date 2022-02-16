@@ -29,7 +29,7 @@ jobs:
 
       - name: sync s3
         run: |
-          INSTANCE_ID=$(aws ec2 describe-instances --querys "Reservations[*].Instances[*].InstanceId" --filters Name=tag:Name,Values=$PROJECT_NAME --output text)          
+          INSTANCE_ID=$(aws ec2 describe-instances  --query 'Reservations[].Instances[].[InstanceId][0][0]' --filters "Name=tag:Name,Values=$PROJECT_NAME")          
           aws s3 cp ./$PROJECT_NAME.tar.gz 3://$NAME/$PROJECT_NAME.tar.gz
           aws ec2 stop-instances --instance-ids $INSTANCE_ID
           sleep 60
